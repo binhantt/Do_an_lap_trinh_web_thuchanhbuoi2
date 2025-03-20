@@ -1,0 +1,62 @@
+@page
+@model baitap.Pages.Admin.Products.EditModel
+@{
+    ViewData["Title"] = "Sửa sản phẩm";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <h2>Sửa sản phẩm</h2>
+    <div class="card">
+        <div class="card-body">
+            <form method="post" enctype="multipart/form-data">
+                <input type="hidden" asp-for="Product.Id" />
+                <input type="hidden" asp-for="Product.ImageUrl" />
+                
+                <div class="form-group mb-3">
+                    <label asp-for="Product.Name">Tên sản phẩm</label>
+                    <input asp-for="Product.Name" class="form-control" />
+                    <span asp-validation-for="Product.Name" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Product.Price">Giá</label>
+                    <input asp-for="Product.Price" class="form-control" />
+                    <span asp-validation-for="Product.Price" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Product.CategoryId">Danh mục</label>
+                    <select asp-for="Product.CategoryId" asp-items="Model.CategoryList" class="form-control">
+                        <option value="">-- Chọn danh mục --</option>
+                    </select>
+                    <span asp-validation-for="Product.CategoryId" class="text-danger"></span>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label asp-for="Product.Description">Mô tả</label>
+                    <textarea asp-for="Product.Description" class="form-control" rows="3"></textarea>
+                </div>
+
+                <div class="form-group mb-3">
+                    <label>Hình ảnh hiện tại</label>
+                    <div class="mb-2">
+                        <img src="@Model.Product.ImageUrl" style="max-width: 200px;" class="img-thumbnail" />
+                    </div>
+                    <label>Thay đổi hình ảnh</label>
+                    <input type="file" name="ImageFile" class="form-control" accept="image/*" />
+                    <span asp-validation-for="Product.ImageUrl" class="text-danger"></span>
+                </div>
+
+                <div class="form-group">
+                    <a asp-page="Index" class="btn btn-secondary">Quay lại</a>
+                    <button type="submit" class="btn btn-primary">Lưu</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}

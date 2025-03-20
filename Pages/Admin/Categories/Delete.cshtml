@@ -1,0 +1,28 @@
+@page
+@model baitap.Pages.Admin.Categories.DeleteModel
+@{
+    ViewData["Title"] = "Xóa danh mục";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <h2>Xóa danh mục</h2>
+    <div class="card">
+        <div class="card-body">
+            <h3>Bạn có chắc chắn muốn xóa danh mục này?</h3>
+            <div class="form-group">
+                <dl class="row">
+                    <dt class="col-sm-2">Tên danh mục:</dt>
+                    <dd class="col-sm-10">@Model.Category.Name</dd>
+                    <dt class="col-sm-2">Mô tả:</dt>
+                    <dd class="col-sm-10">@Model.Category.Description</dd>
+                </dl>
+            </div>
+            <form method="post">
+                <input type="hidden" asp-for="Category.Id" />
+                <a asp-page="Index" class="btn btn-secondary">Quay lại</a>
+                <button type="submit" class="btn btn-danger">Xác nhận xóa</button>
+            </form>
+        </div>
+    </div>
+</div>

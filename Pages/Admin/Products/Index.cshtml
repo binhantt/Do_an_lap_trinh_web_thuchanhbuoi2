@@ -1,0 +1,128 @@
+@page
+@model baitap.Pages.Admin.Products.IndexModel
+@{
+    ViewData["Title"] = "Quản lý sản phẩm";
+    Layout = "_AdminLayout";
+}
+
+<div class="container-fluid">
+    <div class="d-flex justify-content-between align-items-center mb-4">
+        <h2>Quản lý sản phẩm</h2>
+        <a asp-page="Create" class="btn btn-primary">
+            <i class="fas fa-plus"></i> Thêm sản phẩm
+        </a>
+    </div>
+
+    @if (TempData["Success"] != null)
+    {
+        <div class="alert alert-success alert-dismissible fade show">
+            @TempData["Success"]
+            <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+        </div>
+    }
+
+    <div class="card">
+        <div class="card-body">
+            <div class="table-responsive">
+                <table class="table table-hover">
+                    <thead class="table-light">
+                        <tr>
+                            <th>ID</th>
+                            <th style="min-width: 250px;">Sản phẩm</th>
+                            <th>Giá</th>
+                            <th>Danh mục</th>
+                            <th>Thao tác</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var item in Model.Products)
+                        {
+                            <tr>
+                                <td>@item.Id</td>
+                                <td>
+                                    <div class="d-flex align-items-center">
+                                        @if (!string.IsNullOrEmpty(item.ImageUrl))
+                                        {
+                                            <div class="product-img me-3">
+                                                <img src="@item.ImageUrl" alt="@item.Name" 
+                                                     class="rounded" style="width: 60px; height: 60px; object-fit: cover;" 
+                                                     data-bs-toggle="tooltip" title="Click để xem ảnh lớn"
+                                                     onclick="showImage('@item.ImageUrl', '@item.Name')" />
+                                            </div>
+                                        }
+                                        else
+                                        {
+                                            <div class="product-img me-3">
+                                                <div class="bg-light rounded d-flex align-items-center justify-content-center" 
+                                                     style="width: 60px; height: 60px;">
+                                                    <i class="fas fa-image text-muted"></i>
+                                                </div>
+                                            </div>
+                                        }
+                                        <div>
+                                            <div class="fw-bold">@item.Name</div>
+                                            @if (!string.IsNullOrEmpty(item.Description))
+                                            {
+                                                <small class="text-muted">@(item.Description?.Length > 50 ? item.Description.Substring(0, 47) + "..." : item.Description)</small>
+                                            }
+                                        </div>
+                                    </div>
+                                </td>
+                                <td class="align-middle">@item.Price.ToString("N0") VNĐ</td>
+                                <td class="align-middle">@(item.Category?.Name ?? "N/A")</td>
+                                <td class="align-middle">
+                                    <div class="btn-group">
+                                        <a asp-page="./Edit" asp-route-id="@item.Id" 
+                                           class="btn btn-sm btn-primary" title="Sửa">
+                                            <i class="fas fa-edit"></i>
+                                        </a>
+                                        <form method="post" asp-page-handler="Delete" asp-route-id="@item.Id" 
+                                              class="d-inline">
+                                            <button type="submit" class="btn btn-sm btn-danger" 
+                                                    onclick="return confirm('Bạn có chắc muốn xóa sản phẩm \'@item.Name\' không?')"
+                                                    title="Xóa">
+                                                <i class="fas fa-trash"></i>
+                                            </button>
+                                        </form>
+                                    </div>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Modal for image preview -->
+<div class="modal fade" id="imageModal" tabindex="-1">
+    <div class="modal-dialog modal-dialog-centered">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title"></h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal"></button>
+            </div>
+            <div class="modal-body text-center">
+                <img src="" class="img-fluid" id="modalImage" />
+            </div>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        function showImage(url, title) {
+            const modal = new bootstrap.Modal(document.getElementById('imageModal'));
+            document.querySelector('#imageModal .modal-title').textContent = title;
+            document.getElementById('modalImage').src = url;
+            modal.show();
+        }
+
+        // Initialize tooltips
+        var tooltipTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="tooltip"]'))
+        var tooltipList = tooltipTriggerList.map(function (tooltipTriggerEl) {
+            return new bootstrap.Tooltip(tooltipTriggerEl)
+        })
+    </script>
+}
