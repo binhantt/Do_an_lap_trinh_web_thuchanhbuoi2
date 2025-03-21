@@ -143,3 +143,4 @@ E:\hutech\baitap\obj\Debug\net8.0\refint\..dll
 E:\hutech\baitap\obj\Debug\net8.0\..pdb
 E:\hutech\baitap\obj\Debug\net8.0\..genruntimeconfig.cache
 E:\hutech\baitap\obj\Debug\net8.0\ref\..dll
+E:\hutech\baitap\obj\Debug\net8.0\..sourcelink.json
