@@ -77,14 +77,12 @@
                         <span>Sản phẩm</span>
                     </a>
                 </li>
-                <!-- Update the logout link in the sidebar -->
+                <!-- Updated logout link with correct URL -->
                 <li class="nav-item mt-auto">
-                    <form method="get" asp-page="/Admin/Auth/Logout" class="m-0">
-                        <button type="submit" class="nav-link text-danger border-0 bg-transparent w-100 d-flex align-items-center gap-2">
-                            <i class="fas fa-sign-out-alt"></i>
-                            <span>Đăng xuất</span>
-                        </button>
-                    </form>
+                    <a href="/Admin/Auth/Logout" class="nav-link text-danger d-flex align-items-center gap-2">
+                        <i class="fas fa-sign-out-alt"></i>
+                        <span>Đăng xuất</span>
+                    </a>
                 </li>
             </ul>
         </div>

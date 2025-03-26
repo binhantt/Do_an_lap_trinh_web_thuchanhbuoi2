@@ -1,11 +1,10 @@
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.RazorPages;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Authorization;
 
 namespace baitap.Pages.Admin.Auth
 {
-    [Authorize(Roles = "Admin")]
+    [Area("Admin")]
     public class LogoutModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -17,7 +16,10 @@ namespace baitap.Pages.Admin.Auth
 
         public async Task<IActionResult> OnGetAsync()
         {
+            // Simple direct logout
             await _signInManager.SignOutAsync();
+            
+            // Force redirect to login page
             return RedirectToPage("/Admin/Auth/Login");
         }
     }

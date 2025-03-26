@@ -15,26 +15,28 @@ namespace baitap.Pages
             _context = context;
         }
 
-        public IList<Category> Categories { get; set; } = default!;
-        public IList<Product> Products { get; set; } = default!;
+        public IList<Category> Categories { get; set; } = new List<Category>();
+        public IList<Product> Products { get; set; } = new List<Product>();
         public int? CategoryId { get; set; }
 
         public async Task OnGetAsync(int? categoryId)
         {
             CategoryId = categoryId;
-            Categories = await _context.Categories.ToListAsync();
             
-            var query = _context.Products
-                .Include(p => p.Category)
-                .OrderByDescending(p => p.Id)
-                .AsQueryable();
+            Categories = await _context.Categories
+                .Include(c => c.Products)
+                .ToListAsync();
 
+            var query = _context.Products.AsQueryable();
+            
             if (categoryId.HasValue)
             {
                 query = query.Where(p => p.CategoryId == categoryId);
             }
 
-            Products = await query.ToListAsync();
+            Products = await query
+                .Include(p => p.Category)
+                .ToListAsync();
         }
     }
 }

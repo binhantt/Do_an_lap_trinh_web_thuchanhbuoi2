@@ -1,66 +1,125 @@
 ﻿<!DOCTYPE html>
-<html lang="en">
+<html lang="vi">
 <head>
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>@ViewData["Title"] - Shop Online</title>
+    <title>@ViewData["Title"] - SHOPEE TEMPLATE - BỘ</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@300;400;500;700&display=swap" rel="stylesheet">
 </head>
 <body>
-    <header>
-        <nav class="navbar navbar-expand-sm navbar-light bg-white border-bottom box-shadow mb-3">
-            <div class="container">
-                <a class="navbar-brand" asp-area="" asp-page="/Index">Shop Online</a>
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse">
-                    <span class="navbar-toggler-icon"></span>
-                </button>
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Index">Trang chủ</a>
-                        </li>
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-page="/Products/Index">Sản phẩm</a>
-                        </li>
-                    </ul>
-                    <ul class="navbar-nav">
-                        @if (User.Identity?.IsAuthenticated ?? false)
-                        {
-                            <li class="nav-item">
-                                <span class="nav-link text-dark">Xin chào, @User.Identity.Name!</span>
-                            </li>
-                            <li class="nav-item">
-                                <form asp-controller="Account" asp-action="Logout" method="post" class="form-inline">
-                                    <button type="submit" class="btn btn-link nav-link text-dark">Đăng xuất</button>
-                                </form>
-                            </li>
-                        }
-                        else
-                        {
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Account/Login">Đăng nhập</a>
-                            </li>
-                            <li class="nav-item">
-                                <a class="nav-link text-dark" asp-page="/Account/Register">Đăng ký</a>
-                            </li>
-                        }
-                    </ul>
+    <nav class="navbar navbar-expand-lg navbar-light sticky-top" style="background-color: #00ffff;">
+        <div class="container">
+            <a class="navbar-brand fw-bold" asp-page="/Index">
+                <i class="fas fa-store me-2"></i>SHOPEE TEMPLATE - BỘ
+            </a>
+            <button class="navbar-toggler border-0" type="button" data-bs-toggle="collapse" data-bs-target="#navbarMain">
+                <span class="navbar-toggler-icon"></span>
+            </button>
+
+            <div class="collapse navbar-collapse" id="navbarMain">
+                <ul class="navbar-nav mx-auto">
+                    <li class="nav-item">
+                        <a class="nav-link px-3" asp-page="/Index">
+                            <i class="fas fa-home me-1"></i>Trang chủ
+                        </a>
+                    </li>
+                    <li class="nav-item dropdown">
+                        <a class="nav-link px-3 dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown">
+                            <i class="fas fa-th-list me-1"></i>Danh mục
+                        </a>
+                        <ul class="dropdown-menu animate slideIn">
+                            @await Component.InvokeAsync("CategoryMenu")
+                        </ul>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" asp-page="/Products/Index">
+                            <i class="fas fa-store me-1"></i>Cửa hàng
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#">
+                            <i class="fas fa-blog me-1"></i>Blog
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link px-3" href="#">
+                            <i class="fas fa-info-circle me-1"></i>Hướng dẫn
+                        </a>
+                    </li>
+                </ul>
+
+                <div class="d-flex align-items-center">
+                    @if (User.Identity?.IsAuthenticated ?? false)
+                    {
+                        <div class="dropdown">
+                            <button class="btn btn-outline-dark dropdown-toggle rounded-pill" type="button" data-bs-toggle="dropdown">
+                                <i class="fas fa-user-circle me-1"></i>@User.Identity.Name
+                            </button>
+                            <ul class="dropdown-menu dropdown-menu-end animate slideIn">
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-user me-2"></i>Tài khoản</a></li>
+                                <li><a class="dropdown-item" href="#"><i class="fas fa-download me-2"></i>Tải xuống</a></li>
+                                <li><hr class="dropdown-divider"></li>
+                                <li>
+                                    <form asp-page="/Account/Logout" method="post" class="d-inline">
+                                        <button type="submit" class="dropdown-item text-danger">
+                                            <i class="fas fa-sign-out-alt me-2"></i>Đăng xuất
+                                        </button>
+                                    </form>
+                                </li>
+                            </ul>
+                        </div>
+                    }
+                    else
+                    {
+                        <a asp-page="/Account/Login" class="btn btn-outline-dark rounded-pill me-2">
+                            <i class="fas fa-sign-in-alt me-1"></i>Đăng nhập
+                        </a>
+                        <a asp-page="/Account/Register" class="btn btn-dark rounded-pill">
+                            <i class="fas fa-user-plus me-1"></i>Đăng ký
+                        </a>
+                    }
                 </div>
             </div>
-        </nav>
-    </header>
+        </div>
+    </nav>
 
-    <div class="container">
-        <main role="main" class="pb-3">
+    <div class="container mt-4">
+        <main role="main">
             @RenderBody()
         </main>
     </div>
 
-    <footer class="border-top footer text-muted">
+    <footer class="footer mt-5 py-4 bg-light">
         <div class="container">
-            &copy; @DateTime.Now.Year - Shop Online
+            <div class="row">
+                <div class="col-md-4">
+                    <h5 class="mb-3">SHOPEE TEMPLATE - BỘ</h5>
+                    <p class="text-muted">Chuyên cung cấp template Shopee chất lượng cao.</p>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Liên kết</h5>
+                    <ul class="list-unstyled">
+                        <li><a href="#" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-2"></i>Về chúng tôi</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-2"></i>Chính sách</a></li>
+                        <li><a href="#" class="text-decoration-none text-muted"><i class="fas fa-angle-right me-2"></i>Điều khoản</a></li>
+                    </ul>
+                </div>
+                <div class="col-md-4">
+                    <h5 class="mb-3">Liên hệ</h5>
+                    <ul class="list-unstyled">
+                        <li><i class="fas fa-phone me-2"></i>0123 456 789</li>
+                        <li><i class="fas fa-envelope me-2"></i>contact@shopeetemplate.com</li>
+                        <li><i class="fas fa-map-marker-alt me-2"></i>123 Đường ABC, TP.HCM</li>
+                    </ul>
+                </div>
+            </div>
+            <hr>
+            <div class="text-center text-muted">
+                &copy; @DateTime.Now.Year SHOPEE TEMPLATE - BỘ. All rights reserved.
+            </div>
         </div>
     </footer>
 
@@ -69,5 +128,68 @@
     <script src="~/js/site.js" asp-append-version="true"></script>
 
     @await RenderSectionAsync("Scripts", required: false)
+
+    <style>
+        body {
+            font-family: 'Roboto', sans-serif;
+        }
+        .navbar {
+            box-shadow: 0 2px 10px rgba(0,0,0,.1);
+        }
+        .navbar-nav .nav-link {
+            color: #333 !important;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        .navbar-nav .nav-link:hover {
+            color: #0066cc !important;
+            transform: translateY(-2px);
+        }
+        .search-form .form-control {
+            border-radius: 20px;
+            padding-left: 15px;
+        }
+        .search-form .btn {
+            border-radius: 20px;
+        }
+        .dropdown-menu {
+            border: none;
+            box-shadow: 0 0.5rem 1rem rgba(0,0,0,.15);
+            border-radius: 10px;
+        }
+        .dropdown-item {
+            padding: 8px 20px;
+            transition: all 0.2s;
+        }
+        .dropdown-item:hover {
+            background-color: #f8f9fa;
+            transform: translateX(5px);
+        }
+        .animate {
+            animation-duration: 0.3s;
+            animation-fill-mode: both;
+        }
+
+        @@keyframes slideIn {
+            0% {
+                transform: translateY(1rem);
+                opacity: 0;
+            }
+            100% {
+                transform: translateY(0rem);
+                opacity: 1;
+            }
+        }
+
+        .slideIn {
+            animation-name: slideIn;
+        }
+        .footer {
+            background-color: #f8f9fa;
+        }
+        .footer a:hover {
+            color: #0066cc !important;
+        }
+    </style>
 </body>
 </html>

@@ -1,0 +1,116 @@
+@page
+@model baitap.Pages.CategoryProductsModel
+@{
+    ViewData["Title"] = Model.Category?.Name ?? "Danh mục sản phẩm";
+}
+
+<div class="container mt-4">
+    <!-- Enhanced breadcrumb with better styling -->
+    <nav aria-label="breadcrumb" class="bg-light p-2 rounded mb-4">
+        <ol class="breadcrumb m-0">
+            <li class="breadcrumb-item"><a asp-page="/Index" class="text-decoration-none"><i class="fas fa-home me-1"></i>Trang chủ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">@Model.Category?.Name</li>
+        </ol>
+    </nav>
+
+    <!-- Improved category header with background -->
+    <div class="category-header bg-primary bg-gradient text-white p-4 rounded mb-4">
+        <div class="d-flex align-items-center">
+            <i class="fas fa-folder me-3 fa-2x"></i>
+            <div>
+                <h2 class="mb-0">@Model.Category?.Name</h2>
+                <p class="mb-0 opacity-75">@(Model.Products?.Count ?? 0) sản phẩm</p>
+            </div>
+        </div>
+    </div>
+
+    @if (Model.Products != null && Model.Products.Any())
+    {
+        <div class="row row-cols-1 row-cols-sm-2 row-cols-md-4 g-4">
+            @foreach (var product in Model.Products)
+            {
+                <div class="col">
+                    <a asp-page="/Products/Details" asp-route-id="@product.Id" class="text-decoration-none">
+                        <div class="card h-100 shadow-sm product-card">
+                            <div class="position-relative">
+                                @if (!string.IsNullOrEmpty(product.ImageUrl))
+                                {
+                                    <img src="@product.ImageUrl" class="card-img-top" alt="@product.Name">
+                                }
+                                else
+                                {
+                                    <div class="bg-light d-flex align-items-center justify-content-center" style="height: 200px;">
+                                        <i class="fas fa-image text-muted fa-3x"></i>
+                                    </div>
+                                }
+                                <div class="position-absolute top-0 start-0 m-2">
+                                    <span class="badge bg-info rounded-pill"><i class="fas fa-tag me-1"></i>Mới</span>
+                                </div>
+                            </div>
+                            <div class="card-body text-center">
+                                <h6 class="card-title text-truncate mb-3">@product.Name</h6>
+                                <div class="price-tag mb-3">
+                                    <span class="text-danger fw-bold">@product.Price.ToString("N0")VNĐ</span>
+                                </div>
+                                <div class="d-grid">
+                                    <span class="btn btn-sm btn-outline-primary">Xem chi tiết</span>
+                                </div>
+                            </div>
+                        </div>
+                    </a>
+                </div>
+            }
+        </div>
+    }
+    else
+    {
+        <div class="alert alert-info d-flex align-items-center p-4">
+            <i class="fas fa-info-circle fa-2x me-3"></i>
+            <div>
+                <h5 class="alert-heading">Không có sản phẩm!</h5>
+                <p class="mb-0">Hiện chưa có sản phẩm nào trong danh mục này.</p>
+            </div>
+        </div>
+    }
+</div>
+
+<style>
+    .product-card {
+        border: none;
+        transition: all 0.3s ease;
+        overflow: hidden;
+    }
+    .product-card:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 .5rem 1rem rgba(0,0,0,.15)!important;
+    }
+    .card-img-top {
+        height: 200px;
+        object-fit: cover;
+        transition: transform 0.5s ease;
+    }
+    .product-card:hover .card-img-top {
+        transform: scale(1.05);
+    }
+    .card-body {
+        padding: 1.25rem;
+    }
+    .card-title {
+        font-size: 0.95rem;
+        color: #2c3e50;
+        font-weight: 500;
+    }
+    .price-tag {
+        font-size: 1.1rem;
+    }
+    .badge {
+        font-weight: 500;
+        padding: 0.5em 0.8em;
+    }
+    .category-header {
+        box-shadow: 0 4px 6px rgba(0,0,0,0.1);
+    }
+    .breadcrumb {
+        font-size: 0.9rem;
+    }
+</style>

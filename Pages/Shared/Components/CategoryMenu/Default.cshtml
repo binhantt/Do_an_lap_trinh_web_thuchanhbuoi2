@@ -1,0 +1,10 @@
+@model IEnumerable<baitap.Models.Category>
+
+@foreach (var category in Model)
+{
+    <li>
+        <a class="dropdown-item" asp-page="/CategoryProducts" asp-route-categoryId="@category.Id">
+            <i class="fas fa-folder me-2"></i>@category.Name
+        </a>
+    </li>
+}

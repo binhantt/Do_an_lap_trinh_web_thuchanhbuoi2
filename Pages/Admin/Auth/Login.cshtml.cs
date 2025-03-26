@@ -5,6 +5,7 @@ using baitap.Models;
 
 namespace baitap.Pages.Admin.Auth
 {
+    [Area("Admin")]
     public class LoginModel : PageModel
     {
         private readonly SignInManager<IdentityUser> _signInManager;
@@ -19,8 +20,16 @@ namespace baitap.Pages.Admin.Auth
             _userManager = userManager;
         }
 
-        public IActionResult OnGet()
+        public async Task<IActionResult> OnGet()
         {
+            if (User.Identity.IsAuthenticated)
+            {
+                var user = await _userManager.GetUserAsync(User);
+                if (user != null && await _userManager.IsInRoleAsync(user, "Admin"))
+                {
+                    return RedirectToPage("/Admin/Dashboard");
+                }
+            }
             return Page();
         }
 
